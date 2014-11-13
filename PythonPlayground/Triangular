@@ -1,0 +1,9 @@
+def triangular(n):
+    for lineNumber in range(n, 0, -1):
+        line = ''
+        for i in range(0, lineNumber):
+            line += str(n)
+        print line
+
+
+triangular(5)

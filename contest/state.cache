@@ -1,1 +1,1 @@
-{'weights1': [1.0, 2], 'w2': [0.5, 3]}
+{'closestFood': -10, 'caughtInCave': -100000000, 'foodLeft': -100, 'score': 10000, 'closestGhost': -200, 'scoreFood': 120}

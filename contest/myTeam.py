@@ -550,7 +550,7 @@ class DaveDefensiveAgent(CaptureAgent):
         targetPosition = self.getMostLikelyPosition(closestTarget)
 
       maxDistance = self.getMazeDistance(currentPosition, targetPosition)
-
+      print "Current Position " + str(currentPosition)
       #Loop through actions to find best way to get enemy
       for action in legalActions:
         successor = observedState.generateSuccessor(self.index, action)
@@ -574,10 +574,15 @@ class DaveDefensiveAgent(CaptureAgent):
 
       #If only Defender
       if self.getNumberOfOpponentsAttacking(gameState) == 0:
-          (x,y) = (6,11)
+          if self.red:
+              (x,y) = (12,7)
+          else:
+              (x,y) = (19, 8)
 
           targetPosition = (x,y)
           print "TARGET POS " + str(targetPosition)
+          print "Current Position " + str(currentPosition)
+
 
       minDistance = self.getMazeDistance(currentPosition, targetPosition)
 
@@ -647,10 +652,18 @@ class DaveDefensiveAgent2(DaveDefensiveAgent):
 
       #Split Zones
       if self.getNumberOfOpponentsAttacking(gameState) == 0:
-          if(self.index / 2 == 0):
-                (x,y) = (4,6)
+          
+          if self.red:
+            if(self.index / 2 == 0):
+                    (x,y) = (4,6)
+            else:
+                (x,y) = (11, 6)
           else:
-            (x,y) = (11, 6)
+            if(self.index / 2 == 0):
+                print str(gameState.getWalls().width) + " " + str(gameState.getWalls().height) 
+                (x,y) = (28,10)
+            else:
+                (x,y) = (20, 8)  
           targetPosition = (x,y)
           print "TARGET POS " + str(targetPosition)
 

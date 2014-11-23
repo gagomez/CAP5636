@@ -136,7 +136,7 @@ class OffensiveAgent(CaptureAgent):
         weights['foodLeft'] = -100
         weights['scoreFood'] = 120
         weights['score'] = 10000
-        weights['caughtInCave'] = -100000000
+        weights['caughtInCave'] = -1000000000
 
         return weights
 
@@ -255,7 +255,7 @@ class OffensiveAgent(CaptureAgent):
 
         if caveDepth <= 0:
             return 0
-        if 2*(caveDepth + 1) > closestGhost:
+        if caveDepth + 1 >= closestGhost:
             return 1
 
         return 0
@@ -268,37 +268,35 @@ class OffensiveAgent(CaptureAgent):
         if len(actions) > 2:
             return 0
         if len(actions) == 1:
-            return 1
+            return 2
 
         for action in actions:
             movedTo = gameState.generateSuccessor(self.index, action)
-            caveDepth = self.getCaveDepth(movedTo, {position})
+            caveDepth = self.getCaveDepth(movedTo, {position}, 0)
             if caveDepth >= 0:
-                return caveDepth + 1
+                return caveDepth + 2
 
         return 0
 
-    def getCaveDepth(self, gameState, previousPositions):
-        if len(previousPositions) > 10:
-            return -20
+    def getCaveDepth(self, gameState, previousPositions, depth):
+        if depth > 14:
+            return -1
 
         position = gameState.getAgentPosition(self.index)
         actions = [a for a in gameState.getLegalActions(self.index) if a is not Directions.STOP]
         previousPositions.add(position)
 
-        if len(actions) > 2:
-            return -20
-
+        caveSize = 0
         for action in actions:
             movedTo = gameState.generateSuccessor(self.index, action)
             if movedTo.getAgentPosition(self.index) not in previousPositions:
-                caveDepth = self.getCaveDepth(movedTo, previousPositions)
+                caveDepth = self.getCaveDepth(movedTo, previousPositions, depth + 1)
                 if caveDepth < 0:
-                    return -20
+                    return -1
 
-                return caveDepth + 1
+                caveSize += caveDepth
 
-        return 1
+        return caveSize + 2
 
 ######################### CUSTOM DEFENSIVE AGENT #########################
 
